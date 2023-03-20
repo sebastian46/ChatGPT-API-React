@@ -12,7 +12,7 @@ function App() {
   const [input, setInput] = useState("");
 
   const configuration = new Configuration({
-    organization: "org-9TBCyBVlRYhDEQDn9NJseGWl",
+    organization: process.env.REACT_APP_OPENAI_ORG_ID,
     apiKey: process.env.REACT_APP_OPENAI_API_KEY,
   });
 
@@ -22,7 +22,7 @@ function App() {
     setOption(option);
   };
 
-  const doStuff = async () => {
+  const generateResponse = async () => {
     let object = { ...option, prompt: input };
     const response = await openai.createCompletion(object);
     setResult(response.data.choices[0].text);
@@ -33,7 +33,7 @@ function App() {
       {Object.values(option).length === 0 ? (
         <OptionSelection arrayItems={arrayItems} selectOption={selectOption} />
       ) : (
-        <Translation doStuff={doStuff} setInput={setInput} result={result} />
+        <Translation generateResponse={generateResponse} setInput={setInput} result={result} />
       )}
     </div>
   );
